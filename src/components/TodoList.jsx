@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react'
 
 const TodoList = () => {
-  const [todos, setTodos] = useState([])
-  const [input, setInput] = useState('')
-
-  // Load todos from localStorage on mount
-  useEffect(() => {
-    const savedTodos = localStorage.getItem('todos')
-    if (savedTodos) {
-      try {
-        setTodos(JSON.parse(savedTodos))
-      } catch (error) {
-        console.error('Error loading todos:', error)
-      }
+  const [todos, setTodos] = useState(() => {
+    // Load from localStorage on initial render
+    try {
+      const savedTodos = localStorage.getItem('todos')
+      return savedTodos ? JSON.parse(savedTodos) : []
+    } catch (error) {
+      console.error('Error loading todos:', error)
+      return []
     }
-  }, [])
+  })
+  const [input, setInput] = useState('')
 
   // Save todos to localStorage whenever they change
   useEffect(() => {
